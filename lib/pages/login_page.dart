@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:restaurant_app/utils/routes.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
+import 'auth/authenticate.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -9,7 +11,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  String name = '';
+  TextEditingController emailTextController = TextEditingController();
+  TextEditingController passwordTextController = TextEditingController();
   final _formkey = GlobalKey<FormState>();
 
   @override
@@ -24,14 +27,14 @@ class _LoginPageState extends State<LoginPage> {
               child: Column(
                 children: <Widget>[
                   Image.asset(
-                    "assets/images/login_image_new.jpg",
+                    "assets/images/login_image.png",
                     fit: BoxFit.cover,
                   ),
                   SizedBox(
-                    height: 10.0,
+                    height: 5.0,
                   ),
                   Text(
-                    "Welcome $name",
+                    "Welcome",
                     style: TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.bold,
@@ -42,13 +45,18 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(
-                        vertical: 16.0, horizontal: 32.0),
+                        vertical: 16.0, horizontal: 50.0),
                     child: Column(
                       children: [
                         TextFormField(
+                          keyboardType: TextInputType.emailAddress,
                           decoration: InputDecoration(
                             hintText: 'Username',
                             labelText: 'Enter Username',
+                            suffixIcon: Icon(Icons.email),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30.0),
+                            ),
                           ),
                           validator: (value) {
                             if (value!.isEmpty) {
@@ -56,16 +64,20 @@ class _LoginPageState extends State<LoginPage> {
                             }
                             return null;
                           },
-                          onChanged: (value) {
-                            name = value;
-                            setState(() {});
-                          },
+                          controller: emailTextController,
+                        ),
+                        SizedBox(
+                          height: 15.0,
                         ),
                         TextFormField(
                           obscureText: true,
                           decoration: InputDecoration(
                             hintText: 'Password',
                             labelText: 'Enter Password',
+                            suffixIcon: Icon(Icons.visibility_off),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30.0),
+                            ),
                           ),
                           validator: (value) {
                             if (value!.isEmpty) {
@@ -75,16 +87,27 @@ class _LoginPageState extends State<LoginPage> {
                             }
                             return null;
                           },
+                          controller: passwordTextController,
                         ),
                         SizedBox(
                           height: 40.0,
                         ),
                         ElevatedButton(
                             child: Text('Login'),
-                            onPressed: () {
+                            onPressed: () async {
                               if (_formkey.currentState!.validate()) {
-                                Navigator.pushNamed(
-                                    context, MyRoutes.homeRoute);
+                                final result = await context
+                                    .read<AuthenticationService>()
+                                    .signIn(
+                                      email: emailTextController.text.trim(),
+                                      password:
+                                          passwordTextController.text.trim(),
+                                    );
+
+                                if (result == 'Signed in') {
+                                  Fluttertoast.showToast(
+                                      msg: 'Login Successful');
+                                }
                               }
                             },
                             style: ElevatedButton.styleFrom(
