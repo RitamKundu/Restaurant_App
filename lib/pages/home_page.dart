@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+import 'package:restaurant_app/widgets/homepage_body.dart';
 import 'auth/authenticate.dart';
 
 class HomePage extends StatefulWidget {
@@ -25,8 +26,13 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("Restaurant App"),
+        title: Text("Star Sea Food Center"),
+        centerTitle: true,
+        backgroundColor: Colors.white,
+        elevation: 0.0,
+        iconTheme: IconThemeData(color: Colors.black),
         actions: [
           IconButton(
               icon: Icon(Icons.logout),
@@ -39,12 +45,7 @@ class _HomePageState extends State<HomePage> {
               })
         ],
       ),
-      body: Center(
-        child: Container(
-          child: Text("Welcome to star sea food center"),
-        ),
-      ),
-      drawer: Drawer(),
+      body: HomePageBody(),
     );
   }
 }

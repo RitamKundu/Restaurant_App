@@ -51,8 +51,10 @@ class _LoginPageState extends State<LoginPage> {
                         TextFormField(
                           keyboardType: TextInputType.emailAddress,
                           decoration: InputDecoration(
-                            hintText: 'Username',
-                            labelText: 'Enter Username',
+                            contentPadding: EdgeInsets.symmetric(
+                                horizontal: 25, vertical: 18),
+                            hintText: 'Email',
+                            labelText: 'Enter Email',
                             suffixIcon: Icon(Icons.email),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(30.0),
@@ -72,6 +74,8 @@ class _LoginPageState extends State<LoginPage> {
                         TextFormField(
                           obscureText: true,
                           decoration: InputDecoration(
+                            contentPadding: EdgeInsets.symmetric(
+                                horizontal: 25, vertical: 18),
                             hintText: 'Password',
                             labelText: 'Enter Password',
                             suffixIcon: Icon(Icons.visibility_off),
